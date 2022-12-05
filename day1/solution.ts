@@ -1,11 +1,11 @@
-const fs = require('fs/promises');
+import fs from 'fs/promises';
 
 async function getSolution() {
     try {
         const data: string = await fs.readFile('./input.txt', { encoding: 'utf8' });
         const calories = data.split('\n');
         let sum = 0;
-        let caloriesByElf: number[] = [];
+        const caloriesByElf: number[] = [];
         for (const calorie of calories) {
             const calorieInt = parseInt(calorie);
             if (isNaN(calorieInt)) {
