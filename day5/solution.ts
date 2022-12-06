@@ -8,15 +8,8 @@ async function getSolution() {
         const stackPart2 = buildCratesStack(layoutInput);
         const moves = parseMoves(movesInput);
         for (const move of moves) {
-            const [noOfItems, startColumn, endColumn] = move;
-            const columnP1 = stackPart1[startColumn];
-            const columnP2 = stackPart2[startColumn];
-            const part1MovedItems = columnP1
-                .splice(columnP1.length - noOfItems, noOfItems)
-                .reverse();
-            const part2MovedItems = columnP2.splice(columnP2.length - noOfItems, noOfItems);
-            stackPart1[endColumn].push(...part1MovedItems);
-            stackPart2[endColumn].push(...part2MovedItems);
+            applyMovesOnStack(stackPart1, move, false);
+            applyMovesOnStack(stackPart2, move, true);
         }
 
         const part1 = stackPart1.reduce((accum, column) => {
@@ -64,4 +57,14 @@ const parseMoves = (input: string) => {
         moves.push([noOfItems, startColumn, endColumn]);
     }
     return moves;
+};
+
+const applyMovesOnStack = (stack: string[][], move: number[], reverseMoves: boolean) => {
+    const [noOfItems, startColumn, endColumn] = move;
+    const column = stack[startColumn];
+    let movedItems = column.splice(column.length - noOfItems, noOfItems).reverse();
+    if (reverseMoves) {
+        movedItems = movedItems.reverse();
+    }
+    stack[endColumn].push(...movedItems);
 };
